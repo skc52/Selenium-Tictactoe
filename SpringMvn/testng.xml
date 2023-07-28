@@ -1,0 +1,19 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Parallel Test Suite" parallel="tests" thread-count="3">
+    <test name="test1">
+        <classes>
+            <class name="com.ea.SpringMvn.SpringMvnApplicationTests" />
+        </classes>
+    </test>
+    <test name="test2">
+        <classes>
+            <class name="com.ea.SpringMvn.SpringMvnApplicationTests" />
+        </classes>
+    </test>
+    <test name="test3">
+        <classes>
+            <class name="com.ea.SpringMvn.SpringMvnApplicationTests" />
+        </classes>
+    </test>
+
+</suite>

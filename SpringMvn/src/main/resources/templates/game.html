@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TicTacToe</title>
+    <style>
+        /* Add some styling for the game board */
+        #game-board {
+            margin: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 300px;
+            height: 300px;
+            table-layout: fixed;
+            border: 2px solid black;
+        }
+
+        td {
+            border: 1px solid black;
+            text-align: center;
+            font-size: 48px;
+            font-weight: bold;
+            height:99px;
+            cursor: pointer;
+        }
+
+        td:hover {
+            background-color: lightgray;
+        }
+
+        button {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<h1>TicTacToe</h1>
+<div id="game-board">
+    <table>
+        <tr th:each="row, rowStat : ${game.board}">
+            <td th:each="cell, colStat : ${row}" th:onclick="|makeMove(${rowStat.index}, ${colStat.index})|">
+                [[${cell}]]
+            </td>
+        </tr>
+    </table>
+</div>
+<form id="reset-form" action="/game/reset" method="post">
+    <button type="submit">Reset</button>
+</form>
+<div id = "msg">
+
+</div>
+<script>
+    function makeMove(row, col) {
+        fetch('/game/move', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `row=${row}&col=${col}`,
+        })
+        .then(response => response.text())
+        .then(result => {
+                        var msgDiv = document.getElementById("msg");
+
+            if (result === 'success') {
+                // Refresh the page to update the game board
+                location.reload();
+            } else if (result === 'win') {
+                msgDiv.innerHTML = "<h1>Congratulations! You won!</h1>"
+            } else if (result === 'draw') {
+                msgDiv.innerHTML = "<h1>It\'s a draw!</h1>"
+
+            } else if (result === 'invalid') {
+             msgDiv.innerHTML = "<h1>Invalid move. Please try again.</h1>"
+
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+</script>
+</body>
+</html>
